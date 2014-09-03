@@ -46,13 +46,14 @@ avg a b = (a + b)/2
 -}
 
 avg3 :: Double -> Double -> Double -> Double
-avg3 a b c = undefined
+avg3 a b c = (a+b+c)/3
 
 {-
    Результаты проверки:
-
-   ???
-
+	*Main> avg3 3 4 5
+	4.0
+	*Main> avg3 56 45 37
+	46.0
 -}
 
 -- 3) Выражения
@@ -62,7 +63,7 @@ avg3 a b c = undefined
    обращая внимание на обозначения и приоритеты операций, стандартные функции,
    расстановку скобок:
 
-    2 + 3
+    2 + 3               
     mod 10 4
     10 `mod` 4
     True && 5 < 10
@@ -76,6 +77,33 @@ avg3 a b c = undefined
     12345^54321
     2 < 3 || 9999954321^99912345 > 12345^54321
 
+
+	*Main> 2 + 3
+	5
+	*Main> mod 10 4
+	2
+	*Main> 10 `mod` 4
+	2
+	*Main> True && 5 < 10
+	True
+	*Main> 5<7 || 10>3
+	True
+	*Main> sqrt(-2)
+	NaN
+	*Main> sqrt(sqrt 16)
+	2.0
+	*Main> let x = 4 in (sin x)^2 + (cos x)^2
+	1.0
+	*Main> x
+
+	<interactive>:30:1: Not in scope: `x'
+	*Main> 7^(-1)
+	*** Exception: Negative exponent
+	*Main> error "AAAA!!!!"
+	*** Exception: AAAA!!!!
+
+	*Main> 2<3 || 999954321^99912345>12345^54321
+	True
 -}
 
 -- 4) Типы
@@ -100,6 +128,23 @@ avg3 a b c = undefined
    5 < 7
    if 2 > 3 then 7 else 5
    5 > 6 && False
+
+	*Main> :t 5
+	5 :: Num a => a
+	*Main> :t 5.0
+	5.0 :: Fractional a => a
+	*Main> :t sqrt 4
+	sqrt 4 :: Floating a => a
+	*Main> :t sqrt 4.0
+	sqrt 4.0 :: Floating a => a
+	*Main> :t 2+3
+	2+3 :: Num a => a
+	*Main> :t 5<7
+	5<7 :: Bool
+
+
+	
+
 
    Команда ":set +t" включает режим, при котором печатается тип каждого вычисляемого выражения.
    Команда ":set +s" включает режим, при котором печатается время вычисления каждого выражения.

@@ -198,12 +198,15 @@ bothTrue _  _ = False
 -- д) Функция, возвращающая True, если только один из её аргументов равен True,
 -- и False в противном случае (пользоваться стандартными логическими операциями не следует).
 oneTrue :: Bool -> Bool -> Bool
-oneTrue = undefined
+oneTrue True _ = True
+oneTrue _ True = True
+oneTrue True True = True
+oneTrue _ _ = False
 
 -- е) Дана температура в градусах Фаренгейта. Вычислить соответствующую температуру
 -- в градусах Цельсия.
 f2c :: Double -> Double
-f2c = undefined
+f2c a = (a - 32) * (5/9)
 
 {-
    ж) Найти наибольший общий делитель двух целых чисел, пользуясь
@@ -211,14 +214,22 @@ f2c = undefined
       НОД(a, b) = НОД(b, a mod b), если b ≠ 0; 
       НОД(a, 0) = a.
 -}
--- gcd' :: ???
-gcd' = undefined
+gcd' :: Int -> Int -> Int
+gcd' a 0 = a
+gcd' a b = gcd' b (mod a b) 
+
 
 -- з) Функция, возвращающая название дня недели по его номеру (от 1 до 7),
 --    если номер неправильный, генерируется исключение (функция error).
 dayOfWeek :: Int -> String
-dayOfWeek = undefined
-
+dayOfWeek 1 = "Понедельник"
+dayOfWeek 2 = "Вторник"
+dayOfWeek 3 = "Среда"
+dayOfWeek 4 = "Четверг"
+dayOfWeek 5 = "Пятница"
+dayOfWeek 6 = "Суббота"
+dayOfWeek 7 = "Воскресенье"
+dayOfWeek _ = error "Fail! Try again!"
 
 -- Далее типовые аннотации, если их нет, следует писать самостоятельно.
 
@@ -238,13 +249,20 @@ sign a
 	  x^2,  если 0 < x < 2,
           4,    если x ≥ 2.
 -}
-
-eval_f = undefined
+eval_f :: Int -> Int
+eval_f x 
+	| x<=0 = (-1) * x
+	| x>=2 = 4
+	| otherwise = x^2
 
 -- б) Написать функцию, возвращающую текстовую характеристику ("hot", "warm", "cool", "cold")
 -- по заданному значению температуры в градусах Цельсия.
 describeTemperature :: Double -> String
-describeTemperature = undefined
+describeTemperature c 
+	| c > 30 = "hot"
+	| c <= 30 && c>15 = "warm"
+	| c <= 15 && c>0 = "cool"
+	| otherwise = "cold"
 
 {- 
    в) (*) Дан список температур в градусах Фаренгейта. Вывести для каждого значения

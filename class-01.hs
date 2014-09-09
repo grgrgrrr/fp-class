@@ -284,17 +284,29 @@ sum_n n
   | otherwise = error "n should be >= 1"
 
 -- а) Вычислить сумму всех целых чисел от a до b включительно.
-sum_ab = undefined
+sum_ab :: Int -> Int -> Int
+sum_ab a b
+	| b > a = b + (sum_ab a (b-1))
+	| b==a = a
+	| otherwise = error "n should be >= 1"
 
 {-
    б) Числовая последовательность определяется следующим образом:
       a1 = 1, a2 = 2, a3 = 3, a_k = a_{k−1} + a_{k−2} − 2*a_{k−3}, k = 4, 5, ...
       Вычислить её n-й элемент.
 -}
-eval_a_n = undefined
 
+eval_a_n :: Int -> Int
+eval_a_n n  
+	| n>3 = eval_a_n(n-1) + eval_a_n(n-2) - 2 * eval_a_n(n-3)
+	| n==3 = 3
+	| n==2 = 2
+	| n==1 = 1
+	| otherwise = error "n > 0"
+	
 -- в) Вычислить, пользуясь рекурсией, n-ю степень числа a (n - целое):
-pow = undefined
+pow :: Double -> Double -> Int
+pow a n = 
 
 -- г) Пользуясь ранее написанной функцией pow, вычислить сумму: 1^k + 2^k + ... + n^k.
 sum_nk = undefined

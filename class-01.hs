@@ -305,20 +305,34 @@ eval_a_n n
 	| otherwise = error "n > 0"
 	
 -- в) Вычислить, пользуясь рекурсией, n-ю степень числа a (n - целое):
-pow :: Double -> Double -> Int
-pow a n = 
+pow :: Double -> Int -> Double
+pow a 1 = a
+pow a n  
+	| n>1 = a * pow a (n-1)
+	| otherwise = error ""
 
 -- г) Пользуясь ранее написанной функцией pow, вычислить сумму: 1^k + 2^k + ... + n^k.
-sum_nk = undefined
+sum_nk :: Double -> Int -> Double
+sum_nk 1 k = 1
+sum_nk n k
+	| n>1 = pow n k + sum_nk (n-1) k
+	| otherwise = error "n>1" 
 
 -- д) Сумма факториалов чисел от 1 до n.
+sum_fact :: Int -> Int
 sum_fact 1 = 1
-sum_fact n = undefined
+sum_fact n = fact n + sum_fact (n-1)
   where
-    fact n = undefined
+    fact n
+	| n==1 = 1 
+	| n>1 = n * fact (n - 1)
+	| otherwise = error ""
 
 -- е) Количество цифр целого числа
-number_digits = undefined
+number_digits 0 = 0
+number_digits n 
+	| n>0 = number_digits (n / 10) + 1
+	| otherwise = error "n>0"
 
 -- ж) Проверить, является ли заданное число простым.
 isPrime = undefined

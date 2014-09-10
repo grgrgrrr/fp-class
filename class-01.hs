@@ -329,16 +329,23 @@ sum_fact n = fact n + sum_fact (n-1)
 	| otherwise = error ""
 
 -- е) Количество цифр целого числа
+number_digits :: Int -> Int
 number_digits 0 = 0
 number_digits n 
-	| n>0 = number_digits (n / 10) + 1
+	| n>0 = number_digits (div n 10) + 1
 	| otherwise = error "n>0"
 
 -- ж) Проверить, является ли заданное число простым.
-isPrime = undefined
+isPrime :: Int -> Bool
+isPrime 0 = False
+isPrime 1 = False
+isPrime 2 = True
+isPrime n = notdevide n (n-1)
+	where
+		notdevide n 1 = True
+		notdevide n k = if  k>=2 && mod n k /= 0 && notdevide n 			(k-1) then True else False
 
 -- 8) Разное
-
 {-
    а) Дан номер года (положительное целое число). Определить количество дней в этом году,
   учитывая, что обычный год насчитывает 365 дней, а високосный — 366 дней. Високосным
@@ -346,7 +353,11 @@ isPrime = undefined
   не делятся на 400 (например, годы 300, 1300 и 1900 не являются високосными,
   а 1200 и 2000 — являются).
 -}
-
-nDays year = undefined
-  where
-    isLeap = undefined
+nDays :: Int -> Int
+nDays year
+	| isLeap year == True = 366
+	| isLeap year == False = 365
+  	where
+	    isLeap y = if mod y 4 == 0 && exc y == False then True else False 
+		where 
+			exc ye = if mod ye 100 == 0 && mod ye 400 /=0 					then True else False 

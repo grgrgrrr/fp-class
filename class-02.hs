@@ -62,9 +62,31 @@ fltOdd (x:xs)
 -- 2.4
 -- Написать следующие функции обработки списков:
 -- а) удалить все отрицательные элементы;
+removeNeg :: Integral a => [a] -> [a]
+removeNeg [] = []
+removeNeg (x:xs)
+	| x < 0 = removeNeg(xs)
+	| otherwise = x:removeNeg(xs)
+
 -- б) увеличить элементы с чётными значениями в два раза;
+doubleEven :: Integral a => [a] -> [a]
+doubleEven [] = []
+doubleEven (x:xs)
+	| even x = x * 2 : doubleEven(xs)
+	| otherwise = doubleEven(xs)
+
 -- в) переставить местами чётные и нечётные по порядку следования элементы
 --    (для списков нечётной длины отбрасывать последний элемент).
+
+--remLast :: Integral a => [a] -> [a]
+--remLast xs
+--	| odd length xs = 
+
+
+
+swapOddEven :: Integral a => [a] -> [a]
+swapOddEven [] = []
+swapOddEven (x:xs)
 
 -- 2.5 
 -- Даны два списка целых чисел. Сформировать список, каждый элемент которого равен сумме

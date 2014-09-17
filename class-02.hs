@@ -77,28 +77,25 @@ doubleEven (x:xs)
 
 -- в) переставить местами чётные и нечётные по порядку следования элементы
 --    (для списков нечётной длины отбрасывать последний элемент).
-
---remLast :: Integral a => [a] -> [a]
---remLast xs
---	| odd length xs = 
-
-
+--немного не доделано
 
 swapOddEven :: Integral a => [a] -> [a]
 swapOddEven [] = []
-swapOddEven (x:xs)
+swapOddEven (x:y:xs) = y : x : swapOddEven(xs)
 
 -- 2.5 
 -- Даны два списка целых чисел. Сформировать список, каждый элемент которого равен сумме
 -- соответствующих   элементов исходных списков. Предусмотреть ситуацию списков разной длины.
+ 
 combine_plus :: [Integer] -> [Integer] -> [Integer]
 combine_plus [] ys = ys
 combine_plus xs [] = xs
-combine_plus (x:xs) (y:ys) = undefined
+combine_plus (x:xs) (y:ys) = (x + y):combine_plus (xs) (ys) 
 
 -- 2.6
 -- Даны два списка. Сформировать новый список, содержащий пары из соответствующих элементов
 -- исходных списков. Хвост более длинного списка отбросить.
+pairList :: [Integer] -> [Integer] -> [(Integer, Integer)]
 
 -- 2.7
 -- Написать функции, которые по заданному n возвращают список, состоящий из n первых натуральных чисел

@@ -103,11 +103,14 @@ pairList (x:xs) (y:ys) = (x, y):pairList (xs) (ys)
 -- 2.7
 -- Написать функции, которые по заданному n возвращают список, состоящий из n первых натуральных чисел
 -- а) в порядке убывания;
--- б) в порядке возрастания.
 firstNUp :: Integer -> [Integer]
 firstNUp 0 = []
-firsttNUp n
+firstNUp n = n:firstNUp (n-1) 
 
+-- б) в порядке возрастания.
+firstNDown :: Integer -> [Integer]
+firstNDown 0 = []
+firstNDown n = n- : firstNDown (n-1)
 
 -- 2.8
 -- Дан элемент типа a и список [a]. Вставить между всеми элементами списка заданный элемент.

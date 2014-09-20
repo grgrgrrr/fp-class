@@ -106,6 +106,7 @@ pairList (x:xs) (y:ys) = (x, y):pairList (xs) (ys)
 -- б) в порядке возрастания.
 firstNUp :: Integer -> [Integer]
 firstNUp 0 = []
+firsttNUp n
 
 
 -- 2.8

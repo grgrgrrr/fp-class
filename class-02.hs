@@ -77,9 +77,9 @@ doubleEven (x:xs)
 
 -- в) переставить местами чётные и нечётные по порядку следования элементы
 --    (для списков нечётной длины отбрасывать последний элемент).
---немного не доделано
 
 swapOddEven :: Integral a => [a] -> [a]
+swapOddEven [x] = []
 swapOddEven [] = []
 swapOddEven (x:y:xs) = y : x : swapOddEven(xs)
 
@@ -109,21 +109,37 @@ firstNUp n = n:firstNUp (n-1)
 
 -- б) в порядке возрастания.
 firstNDown :: Integer -> [Integer]
-firstNDown 0 = []
-firstNDown n = n- : firstNDown (n-1)
+firstNDown n = reverse' $ firstNUp n
+	where 
+		reverse' [] = []
+		reverse' (x:xs) = reverse' xs ++ [x]
+
 
 -- 2.8
 -- Дан элемент типа a и список [a]. Вставить между всеми элементами списка заданный элемент.
+insertA :: Num a => a -> [a] -> [a]
+insertA a [x] = [x]
+insertA a (x:xs) = x: a : insertA a xs
 
 -- 2.9
 -- Написать функцию, которая разбивает список на два подсписка: элементы из начала списка,
 -- совпадающие с первым элементом, и все остальные элементы, например:
 -- [1,1,1,2,3,1] -> ([1,1,1], [2,3,1]).
+divide':: Eq a => [a] -> ([a], [a])
+divide' [] = ([],[])
+divide' (x:y:xs) 
+	| x == y = (x:y:(fst $ divide'(xs)) , snd $ divide'(xs))
+	| otherwise = (fst $ divide'(xs), x:y:(snd $ divide'(xs))) 
 
 --3
 -- Даны типовые аннотации функций. Попытайтесь догадаться, что они делают, и напишите их
 -- рекурсивные реализации (если вы можете предложить несколько вариантов, реализуйте все):
 -- а) [a] -> Int -> a
+
+
+
+
+
 -- б) Eq a => [a] -> a -> Bool
 -- в) [a] -> Int -> [a]
 -- г) a -> Int -> [a]

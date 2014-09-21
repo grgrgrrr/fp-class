@@ -135,15 +135,50 @@ divide' (x:y:xs)
 -- Даны типовые аннотации функций. Попытайтесь догадаться, что они делают, и напишите их
 -- рекурсивные реализации (если вы можете предложить несколько вариантов, реализуйте все):
 -- а) [a] -> Int -> a
-
-
-
-
+-- Вывести n-ый элемент
+findN :: [a] -> Int -> a
+findN (x:xs) 0 = x
+findN (x:xs) n = findN xs (n - 1)
 
 -- б) Eq a => [a] -> a -> Bool
+-- Есть ли среди элементов списка указанный элемент
+isEqElem :: Eq a => [a] -> a -> Bool
+isEqElem [] a = True
+isEqElem (x:xs) a 
+	| x == a = True
+	| otherwise = False
+ 
 -- в) [a] -> Int -> [a]
+-- Создать список из a первых элементов
+firstList :: [a] -> Int -> [a]
+firstList xs 0 = []
+firstList [] _ = []
+firstList (x:xs) a = x : firstList (xs) (a - 1)
+
 -- г) a -> Int -> [a]
+-- Сформировать список из n элементов a
+makeAList :: a -> Int -> [a]
+makeAList a 0 = []
+makeAList a n = a:makeAList a (n - 1)
+
 -- д) [a] -> [a] -> [a]
+--Объеденить два списка в один
+merge :: [a] -> [a] -> [a]
+merge [] [] = []
+merge [] (y:ys) = y:merge [] ys
+merge (x:xs) [] = x:merge xs []
+merge (x:xs) (y:ys) = x:merge xs (y:ys) 
+
+
 -- е) Eq a => [a] -> [[a]]
+
+
+
+
 -- ж) [a] -> [(Int, a)]
+-- Сформировать список из пар (порядок, элемент списка)
+
+
 -- з) Eq a => [a] -> [a]
+
+

@@ -25,11 +25,11 @@ type Point = (Double, Double)
 distance :: Point -> Point -> Double
 distance (x1, y1) (x2, y2) = sqrt (x2 - x1)^2 + sqrt (y2 - y1)^2
 
--- triangle :: ??? -> (Double, Double)
-triangle _ = (p, s)
+triangle :: Point ->Point -> Point -> (Double, Double)
+triangle (a1, a2) (b1, b2) (c1, c2) = (p, s)
   where
-    p = undefined
-    s = undefined
+    p = distance (a1, a2) (b1, b2) + distance (a1, a2) (c1, c2) + distance (b1, b2) (c1, c2)
+    s = sqrt $ p/2 * (p/2 - distance (a1, a2) (b1, b2)) * (p/2 - distance (a1, a2) (c1, c2)) * (p/2 - distance (b1, b2) (c1, c2))
 
 -- Во всех следующих заданиях использование стандартных функций обработки списков не допускается.
 -- Все решения должны реализовываться рекурсивными функциями.
@@ -170,16 +170,18 @@ merge (x:xs) [] = x:merge xs []
 merge (x:xs) (y:ys) = x:merge xs (y:ys) 
 
 -- е) Eq a => [a] -> [[a]]
---Разделить список на отрицаетльные и положительные элементы
-
-
+-- sortTo :: Eq a => [a] -> [[a]]
+-- sortTo [] = [[], []]
+-- sortTo (x:xs) 
+--	| x<10 = x: (head $ sortTo xs)
+--	| otherwise = x: head $ tail $ sortTo xs
 
 
 -- ж) [a] -> [(Int, a)]
 -- Сформировать список из пар (порядок, элемент списка)
 pair :: [a] -> [(Int, a)]
 pair [x] = [(0, x)] 
-pair (x:xs) = undefined
+pair (x:xs) = ((fst $ head $ pair xs) + 1, x) : pair xs
 
 
 -- з) Eq a => [a] -> [a]
@@ -190,6 +192,3 @@ removeZ [] = []
 removeZ (x:y:xs)
 	| x == y = x:removeZ(xs)
 	| otherwise = x:y:removeZ(xs)
-
-
-

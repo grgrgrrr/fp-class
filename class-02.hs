@@ -162,23 +162,34 @@ makeAList a 0 = []
 makeAList a n = a:makeAList a (n - 1)
 
 -- д) [a] -> [a] -> [a]
---Объеденить два списка в один
+--Объединить два списка в один
 merge :: [a] -> [a] -> [a]
 merge [] [] = []
 merge [] (y:ys) = y:merge [] ys
 merge (x:xs) [] = x:merge xs []
 merge (x:xs) (y:ys) = x:merge xs (y:ys) 
 
-
 -- е) Eq a => [a] -> [[a]]
+--Разделить список на отрицаетльные и положительные элементы
 
 
 
 
 -- ж) [a] -> [(Int, a)]
 -- Сформировать список из пар (порядок, элемент списка)
+pair :: [a] -> [(Int, a)]
+pair [x] = [(0, x)] 
+pair (x:xs) = undefined
 
 
 -- з) Eq a => [a] -> [a]
+--Удалить повторяющиеся элементы
+removeZ :: Eq a => [a] -> [a]
+removeZ [x] = [x]
+removeZ [] = []
+removeZ (x:y:xs)
+	| x == y = x:removeZ(xs)
+	| otherwise = x:y:removeZ(xs)
+
 
 

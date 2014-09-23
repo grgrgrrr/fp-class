@@ -17,7 +17,16 @@
 -}
 
 f11a :: Integral a => [a] -> [a]
-f11a = map undefined
+f11a = map (*2)  
+
+f11b :: Integral a => [a] -> [a]
+f11b a = map (*2) $ filter even a
+
+f11c :: Integral a => [a] -> [a]
+f11c a = map (\x -> 0) $ filter odd a
+
+f11e :: Integral a => [a] -> [a]
+f11e = filter (\x -> x < 0)
 
 {-
  1.2 Дан список декартовых координат точек на плоскости (пар вещественных чисел).

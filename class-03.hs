@@ -31,8 +31,8 @@ f11d a k = filter (<=k) a
 f11e :: Integral a => [a] -> [a]
 f11e = filter (\x -> x < 0)
 
---f11f :: Integral a => [a] -> [a]
---f11f a = filter (<0) $ filter odd a 
+f11f :: Integral a => [a] -> [a]
+f11f a = filter (\x -> x<0 || odd x) a
 
 {-
  1.2 Дан список декартовых координат точек на плоскости (пар вещественных чисел).
@@ -44,7 +44,7 @@ f11e = filter (\x -> x < 0)
 type Point = (Double, Double)
 
 f12a :: [Point] -> Integer -> [Point]
-f12a a k = filter (\x -> (findQ x == k)) a
+f12a a k = filter (\x -> findQ x == k) a
 	where
 		findQ p 
 			| fst p > 0 && snd p > 0 = 1
@@ -52,6 +52,10 @@ f12a a k = filter (\x -> (findQ x == k)) a
 			| fst p < 0 && snd p < 0 = 3
 			| otherwise = 4  
 
+
+type Pol = (Double, Double)
+f12b :: [Point] -> [Pol]
+f12b  = map (\x -> (sqrt $ (fst x)^2 + (snd x)^2, fst x / snd x))
 
 {-
  1.3 Дан список слов.

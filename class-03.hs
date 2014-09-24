@@ -25,8 +25,14 @@ f11b a = map (*2) $ filter even a
 f11c :: Integral a => [a] -> [a]
 f11c a = map (\x -> 0) $ filter odd a
 
+f11d :: Integral a => [a] -> a -> [a]
+f11d a k = filter (<=k) a
+
 f11e :: Integral a => [a] -> [a]
 f11e = filter (\x -> x < 0)
+
+--f11f :: Integral a => [a] -> [a]
+--f11f a = filter (<0) $ filter odd a 
 
 {-
  1.2 Дан список декартовых координат точек на плоскости (пар вещественных чисел).
@@ -34,6 +40,10 @@ f11e = filter (\x -> x < 0)
   a) отфильтровать список так, чтобы в нём остались точки из заданной координатной четверти;
   b) преобразовать декартовы координаты в полярные.
 -}
+
+type Point = (Double, Double)
+
+f12
 
 {-
  1.3 Дан список слов.

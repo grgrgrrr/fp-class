@@ -43,7 +43,15 @@ f11e = filter (\x -> x < 0)
 
 type Point = (Double, Double)
 
-f12
+f12a :: [Point] -> Integer -> [Point]
+f12a a k = filter (\x -> (findQ x == k)) a
+	where
+		findQ p 
+			| fst p > 0 && snd p > 0 = 1
+			| fst p < 0 && snd p > 0 = 2
+			| fst p < 0 && snd p < 0 = 3
+			| otherwise = 4  
+
 
 {-
  1.3 Дан список слов.

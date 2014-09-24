@@ -1,3 +1,5 @@
+import Data.Char
+import Data.String.Utils
 {-
 Явная рекурсия в решениях хотя и допускается, но не приветствуется. Старайтесь обходиться стандартными
 функциями, используя при этом создание функций «на лету». Пытайтесь максимально упростить уже написанные
@@ -65,7 +67,13 @@ f12b  = map (\x -> (sqrt $ (fst x)^2 + (snd x)^2, fst x / snd x))
 -}
 
 f13a :: [String] -> [String]
-f13a = map undefined
+f13a  = map (map toUpper) 
+
+f13b :: Int -> [[a]] -> [[a]]
+f13b k a = filter (\x -> length x == k) a
+
+--f13c :: Char -> [[a]] -> [[a]]
+f13c c a = filter (startswith c) a
 
 {-
 2. Формирование числовых последовательностей (iterate).

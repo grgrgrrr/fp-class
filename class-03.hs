@@ -1,5 +1,5 @@
 import Data.Char
-import Data.String.Utils
+import Data.List
 {-
 Явная рекурсия в решениях хотя и допускается, но не приветствуется. Старайтесь обходиться стандартными
 функциями, используя при этом создание функций «на лету». Пытайтесь максимально упростить уже написанные
@@ -22,10 +22,16 @@ f11a :: Integral a => [a] -> [a]
 f11a = map (*2)  
 
 f11b :: Integral a => [a] -> [a]
-f11b a = map (*2) $ filter even a
+f11b = map (\x -> f x) 
+	where f x 
+		| even x = 2*x
+		| otherwise = x
 
 f11c :: Integral a => [a] -> [a]
-f11c a = map (\x -> 0) $ filter odd a
+f11c = map (\x -> f x)
+	where f x 
+		| odd x = 0
+		| otherwise = x
 
 f11d :: Integral a => [a] -> a -> [a]
 f11d a k = filter (<=k) a
@@ -73,7 +79,7 @@ f13b :: Int -> [[a]] -> [[a]]
 f13b k a = filter (\x -> length x == k) a
 
 --f13c :: Char -> [[a]] -> [[a]]
-f13c c a = filter (startswith c) a
+--f13c c a = filter (startswith c) a
 
 {-
 2. Формирование числовых последовательностей (iterate).

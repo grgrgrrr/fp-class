@@ -91,7 +91,19 @@ f13b k a = filter (\x -> length x == k) a
 -}
 
 nats :: [Integer]
-nats = iterate undefined 0
+nats = iterate (1+) 0
+
+evenList :: [Integer]
+evenList = iterate (2+) 0
+
+cList :: [Double]
+cList = iterate (\x -> (x+1)/2) 1
+
+dList :: [Char]
+dList = take 26 $ iterate (\x->chr $ ord x + 1) $ chr $ ord 'A'
+
+eList :: Int -> [[Char]]
+eList n = filter (\x -> length x == n) (subsequences "1234567890")
 
 {-
 3. Группировка списков.

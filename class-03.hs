@@ -1,5 +1,6 @@
 import Data.Char
 import Data.List
+import Data.Ord
 {-
 Явная рекурсия в решениях хотя и допускается, но не приветствуется. Старайтесь обходиться стандартными
 функциями, используя при этом создание функций «на лету». Пытайтесь максимально упростить уже написанные
@@ -50,15 +51,17 @@ f11f a = filter (\x -> x<0 || odd x) a
 -}
 
 type Point = (Double, Double)
+--к какой четверти относится точка
+findQ p 
+	| fst p > 0 && snd p > 0 = 1
+	| fst p < 0 && snd p > 0 = 2
+	| fst p < 0 && snd p < 0 = 3
+	| otherwise = 4  
+
 
 f12a :: [Point] -> Integer -> [Point]
 f12a a k = filter (\x -> findQ x == k) a
-	where
-		findQ p 
-			| fst p > 0 && snd p > 0 = 1
-			| fst p < 0 && snd p > 0 = 2
-			| fst p < 0 && snd p < 0 = 3
-			| otherwise = 4  
+		
 
 
 type Pol = (Double, Double)
@@ -117,11 +120,28 @@ eList n = filter (\x -> length x == n) (subsequences "1234567890")
   e) Дан список. Определить длину самого длинного подсписка, содержащего подряд идущие одинаковые элементы.
 -}
 
+f3a :: [Char] -> [[Char]]
+f3a = groupBy (\x y ->(isDigit x && isDigit y) || (isLetter x && isLetter y))
+
+f3b :: [Point] -> [[Point]]
+f3b = groupBy (\x y -> findQ x == findQ y)
+
+f3c :: Int -> [a] -> [[a]]
+f3c n [] = []
+f3c n xs = take n xs : f3c n (drop n xs)
+
 f3d :: [a] -> Int -> Int -> [[a]]
-f3d xs n m = undefined
+f3d [] n m = []
+f3d xs n m = take n xs : f3d (drop (n-m) xs) n m
 
 -- Должно быть True
 test_f3d = f3d [1..10] 4 2 == [[1,2,3,4],[3,4,5,6],[5,6,7,8],[7,8,9,10],[9,10]]
+
+f3e :: Eq a => [a] -> Int
+f3e a = length $ maximumBy (comparing length) (eqElems a)
+	where
+		eqElems :: Eq a => [a] -> [[a]]
+		eqElems = groupBy (\x y -> x == y)
 
 {-
 4. Разные задачи.

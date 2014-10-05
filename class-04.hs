@@ -69,9 +69,7 @@ f1e a xs
 
 f1e_test_1 = f1e 5 [4, 2] == 5
 f1e_test2 = f1e 5 [4, 5, 6, 3, 2, 1] == 1
-f1e_test2 = f1e 5 [35..100] = 35
-
-
+f1e_test3 = f1e 5 [35..100] == 35
 {-
  2. Свёртки, формирующие списки
   a) Сформировать список, содержащий каждый второй элемент исходного.
@@ -89,6 +87,40 @@ f1e_test2 = f1e 5 [35..100] = 35
   n) Даны два списка одинаковой длины. Сформировать список, состоящий из результатов применения
      заданной функции двух аргументов к соответствующим элементам исходных списков.
 -}
+reverse' = foldl (flip (:)) []
+
+f2a::[a]->[a]
+f2a xs = reverse' . fst $ foldl(\acc x-> (if odd $ snd acc then x:fst acc else fst acc, snd acc + 1)) ([], 0) xs
+
+f2a_test1 = f2a [1, 2, 3, 4] == [2, 4]
+f2a_test2 = f2a [-1.0, 4.5, 5.6, 3.9, 56.67] == [4.5, 3.9]
+f2a_test3 = f2a [1] == []
+
+
+
+f2b:: (Ord a, Num a) => a -> [a] -> [a]
+f2b n xs = reverse' . fst $ foldl(\acc x-> (if (snd acc)<n then x:fst acc else fst acc, snd acc + 1)) ([], 0) xs
+
+f2b_test1 = f2b 3 [1..10] == [1, 2, 3]
+f2b_test2 = f2b 0 [1..67] == []
+f2b_test3 = f2b 0 [] == []
+
+
+
+f2c:: (Ord a, Num a) => a -> [a] -> [a]
+f2c n xs = fst $ foldr(\x acc-> (if (snd acc)<n then x:fst acc else fst acc, snd acc + 1)) ([], 0) xs
+
+f2c_test1 = f2b 3 [1..10] == [8, 9, 10]
+f2c_test2 = f2b 0 [1..67] == []
+f2c_test3 = f2b 0 [] == []
+
+
+f2d :: Ord a => [a] -> [a]
+f2d xs = fst $ foldl(\acc x-> (if x>snd acc then x:fst acc else fst acc, x)) ([], head xs) xs
+
+f2d_test1 = f2d [17, 14, 12, 35, 78] == [78, 35]
+f2d_test2 = f2d [1, 2, 3, 4, 5, 6] == [6, 5, 4, 3, 2]
+f2d_test3 = f2d [9, 6, 3, -3] == []
 
 {-
  3. Использование свёртки как носителя рекурсии (для запуска свёртки можно использовать список типа [1..n]).

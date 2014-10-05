@@ -115,12 +115,27 @@ f2c_test2 = f2b 0 [1..67] == []
 f2c_test3 = f2b 0 [] == []
 
 
+
+
 f2d :: Ord a => [a] -> [a]
 f2d xs = fst $ foldl(\acc x-> (if x>snd acc then x:fst acc else fst acc, x)) ([], head xs) xs
 
 f2d_test1 = f2d [17, 14, 12, 35, 78] == [78, 35]
 f2d_test2 = f2d [1, 2, 3, 4, 5, 6] == [6, 5, 4, 3, 2]
 f2d_test3 = f2d [9, 6, 3, -3] == []
+
+
+
+
+f2e :: Ord a => [a] -> [a]
+f2e xs = fst $ foldl (\acc x -> (if  x < fst (snd acc) && fst (snd acc) < snd (snd acc) then x : fst acc else fst acc, (x, fst (snd acc) ))) ([], (head xs, head xs)) xs
+
+f2e_test1 = f2e [17, 14, 12, 35, 78] == [12]
+f2e_test2 = f2e [1, 2, 3, 4, 5, 6] == []
+--f2e_test3 = f2d [9, 6, 3, -3] == []
+
+
+
 
 {-
  3. Использование свёртки как носителя рекурсии (для запуска свёртки можно использовать список типа [1..n]).

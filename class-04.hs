@@ -132,8 +132,35 @@ f2e xs = fst $ foldl (\acc x -> (if  x < fst (snd acc) && fst (snd acc) < snd (s
 
 f2e_test1 = f2e [17, 14, 12, 35, 78] == [12]
 f2e_test2 = f2e [1, 2, 3, 4, 5, 6] == []
---f2e_test3 = f2d [9, 6, 3, -3] == []
+f2e_test3 = f2e [17, 14, 56, 1, 45] == [1]
 
+
+
+
+f2f::String -> [String]
+f2f xs = snd $ foldr (\x acc -> if x == ' ' then (if fst acc == "" then ("", snd acc) else ("", fst acc:snd acc)) else (x:fst acc, snd acc)) ("", []) (' ':xs)
+
+f2f_test1 = f2f "gjg hgjg        hgjg jg" == ["gjg","hgjg","hgjg","jg"]
+f2f_test2 = f2f "gjg hgjg hgjg jg" == ["gjg","hgjg","hgjg","jg"]
+f2f_test3 = f2f "" == []
+
+
+
+
+
+f2g :: (Num a, Ord a) => a -> [a1] -> [[a1]]
+f2g n xs = fst $ fst $ foldr (\x ((result, cur), len) -> if len >= n then ((cur : result, []), 0) else ((result, x:cur), len + 1)) (([], []), 0) xs 
+
+
+
+
+
+f2m :: Eq a => [a] -> [a]
+f2m xs = fst $ foldr(\x acc-> if x == snd acc then (fst acc, snd acc) else (x:fst acc, x)) ([], head xs) xs
+
+f2mtest_1 =  f2m [1, 2, 4, 5, 5, 5, 6, 4, 3] == [1,2,4,5,6,4,3]
+f2mtest_2 =  f2m [1..10] == [1..10]
+f2mtest_3 =  f2m [1,1,1,1,1,1,1] == []
 
 
 
@@ -146,6 +173,35 @@ f2e_test2 = f2e [1, 2, 3, 4, 5, 6] == []
      n слагаемых).
   e) Проверить, является ли заданное целое число простым.
 -}
+f3a :: (Enum b, Num b) => b -> b -> b
+f3a a b = foldl (+) 0 [a..b]
+
+f3atest_1 = f3a 2 5 == 14
+f3atest_2 = f3a 1 100 == 5050
+f3atest_3 = f3a 0 0 == 0
+
+
+
+f3b :: (Enum a, Num a) => a -> a -> a
+f3b a b = foldl (+) 0 (scanl (*) fact [a+1..b])
+  where
+    fact = foldl (*) 1 [2..a]
+
+f3b_test1 = f3b 1 10 == 4037913
+f3b_test2 = f3b 1 1 == 1
+f3b_test3 = f3b 1 2 == 3
+
+
+
+f3e :: Int -> Bool
+f3e 1 = False
+f3e 2 = True
+f3e n = foldl (\issimple x -> if mod n x == 0 then False else issimple) True [2..n-1]
+
+f3e_test1 = f3e 54 == False
+f3e_test2 = f3e 53 == True
+f3e_test3 = f3e 5 == True
+
 
 {-
  4. Решить задачу о поиске пути с максимальной суммой в треугольнике (см. лекцию 3) при условии,

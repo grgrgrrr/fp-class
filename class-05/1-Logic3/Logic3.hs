@@ -49,10 +49,16 @@ not3 a
 -}
 
 (\/) :: Logic3 -> Logic3 -> Logic3
-a \/ b = undefined
+a \/ b 
+	| a == T && b == T = T
+	| a==F || b == F = F
+	| otherwise = U
 
 (/\) :: Logic3 -> Logic3 -> Logic3
-a /\ b = undefined
+a /\ b 
+	| a==F && b == F = F
+	| a==T || b==T = T
+	| otherwise = U
 
 -- 4. Реализовать аналоги стандартных функций and, or, any, all для случая трёхзначной логики.
 

@@ -63,11 +63,13 @@ a /\ b
 -- 4. Реализовать аналоги стандартных функций and, or, any, all для случая трёхзначной логики.
 
 and3, or3 :: [Logic3] -> Logic3
-and3 = undefined
-or3 = undefined
+and3 = foldl (\acc x -> if x\/acc == T then T else x) T
+
+or3 = foldl (\acc x -> if x/\acc == T then T else x) F 
+
 
 any3, all3 :: (a -> Logic3) -> [a] -> Logic3
-any3 = undefined
+any3 = undefined 
 all3 = undefined
 
 {-
@@ -75,8 +77,18 @@ all3 = undefined
   следующей формулы (закон исключённого четвёртого): x \/ not3 x \/ not3 (not3 x).
 -}
 
-excluded_fourth :: Logic3
-excluded_fourth = undefined
+--excluded_fourth :: Logic3
+excluded_fourth [] = T
+excluded_fourth (x:xs) = f x \/ excluded_fourth xs 
+
+allList = [T, F, U]
+
+f x = x \/ not3 x \/ not3 (not3 x)
+
+
+
+
+
 
 -- Должно быть True
-test_excluded_fourth = excluded_fourth == T
+--test_excluded_fourth = excluded_fourth == T

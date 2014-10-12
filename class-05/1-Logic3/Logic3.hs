@@ -48,14 +48,14 @@ not3 a
 
 -}
 
-(\/) :: Logic3 -> Logic3 -> Logic3
-a \/ b 
+(/\) :: Logic3 -> Logic3 -> Logic3
+a /\ b 
 	| a == T && b == T = T
 	| a==F || b == F = F
 	| otherwise = U
 
-(/\) :: Logic3 -> Logic3 -> Logic3
-a /\ b 
+(\/) :: Logic3 -> Logic3 -> Logic3
+a \/ b 
 	| a==F && b == F = F
 	| a==T || b==T = T
 	| otherwise = U
@@ -63,32 +63,28 @@ a /\ b
 -- 4. Реализовать аналоги стандартных функций and, or, any, all для случая трёхзначной логики.
 
 and3, or3 :: [Logic3] -> Logic3
-and3 = foldl (\acc x -> if x\/acc == T then T else x) T
 
-or3 = foldl (\acc x -> if x/\acc == T then T else x) F 
+and3 = foldl (/\) T
+
+or3 = foldl (\/) F 
 
 
 any3, all3 :: (a -> Logic3) -> [a] -> Logic3
-any3 = undefined 
-all3 = undefined
+any3 f = foldl (\acc x -> f x \/ acc) F
+all3 f = foldl (\acc x -> f x /\ acc) T
 
 {-
   5. Перебирая все возможные значения логической переменной, доказать тождественную истинность
   следующей формулы (закон исключённого четвёртого): x \/ not3 x \/ not3 (not3 x).
 -}
 
---excluded_fourth :: Logic3
-excluded_fourth [] = T
-excluded_fourth (x:xs) = f x \/ excluded_fourth xs 
+excluded_fourth :: Logic3
+excluded_fourth = foldl (\acc x -> f x /\ T) T allList
+  where
+      allList = [T, F, U]
 
-allList = [T, F, U]
-
-f x = x \/ not3 x \/ not3 (not3 x)
-
-
-
-
+      f x = x \/ not3 x \/ not3 (not3 x)
 
 
 -- Должно быть True
---test_excluded_fourth = excluded_fourth == T
+test_excluded_fourth = excluded_fourth == T

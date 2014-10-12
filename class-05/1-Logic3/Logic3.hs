@@ -10,7 +10,7 @@ module Logic3 where
 data Logic3 = T -- Истина
             | U -- Неизвестно
             | F -- Ложь
-            deriving(Show, Eq)
+            deriving(Show, Eq, Ord)
 
 {-
   2. Реализовать логическую операцию not3, определяемую таблицей:
@@ -70,7 +70,9 @@ or3 = foldl (\/) F
 
 
 any3, all3 :: (a -> Logic3) -> [a] -> Logic3
+
 any3 f = foldl (\acc x -> f x \/ acc) F
+
 all3 f = foldl (\acc x -> f x /\ acc) T
 
 {-

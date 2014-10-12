@@ -60,14 +60,21 @@ game_round ((x:xs) , (y:ys))
 -}
 
 data Winner = First | Second
+  deriving (Show, Eq)
 
 game :: ([Card], [Card]) -> (Winner, Int)
-game = undefined
+game (x, y) = game' (x, y) 0
+  where
+    game' ([], _) n = (Second, n)
+    game' (_, []) n = (First, n)
+    game' (x, y) n = game' (game_round (x, y)) (n+1)
 
 {-
   6. Приведите здесь результаты как минимум пяти запусков функции game (в каждом списке
   изначально должно быть не менее 10 карт).
 -}
+
+test_1 = game ([Card Three Hearts, Card Two Diamonds, Card Four Clubs, Card Ace Diamonds, Card Ten Spades, Card Qween Hearts, Card Ace Spades, Card Six Clubs], [Card Three Clubs, Card Nine Diamonds, Card Eight Clubs, Card Ace Clubs, Card Ace Hearts, Card Six Hearts])
 
 {-
   7 (необязательное упражнение). Реализуйте версию функции game, которая помимо результатов

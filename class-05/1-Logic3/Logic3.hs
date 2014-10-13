@@ -78,6 +78,8 @@ all3 = undefined
 -}
 
 --excluded_fourth :: Logic3
+ex = excluded_fourth allList
+
 excluded_fourth [] = T
 excluded_fourth (x:xs) = f x \/ excluded_fourth xs 
 

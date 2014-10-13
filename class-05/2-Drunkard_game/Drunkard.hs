@@ -7,9 +7,11 @@ module Drunkard where
   учитывая, что всего в колоде 52 карты.
 -}
 
-data Suit
+data Suit = Spades | Clubs | Diamonds | Hearts
+  deriving (Show, Eq, Ord) 
 
-data Value
+data Value = One | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace
+  deriving (Show, Eq, Ord) 
 
 data Card = Card Value Suit
 

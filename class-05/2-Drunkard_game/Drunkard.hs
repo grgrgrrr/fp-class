@@ -8,17 +8,10 @@ module Drunkard where
 -}
 
 data Suit = Spades | Clubs | Diamonds | Hearts
-<<<<<<< HEAD
   deriving (Show, Eq, Ord) 
-
-data Value = One | Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace
-  deriving (Show, Eq, Ord) 
-=======
-  deriving (Show, Eq)
 
 data Value = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Qween | King | Ace
   deriving (Show, Eq, Ord)
->>>>>>> fa6123aa2c8378350a20d7380edd77a45cfd6d25
 
 data Card = Card Value Suit
   deriving (Show, Eq)

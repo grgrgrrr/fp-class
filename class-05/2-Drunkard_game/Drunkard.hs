@@ -10,7 +10,7 @@ module Drunkard where
 data Suit = Spades | Clubs | Diamonds | Hearts
   deriving (Show, Eq, Ord) 
 
-data Value = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Qween | King | Ace
+data Value = Two | Three | Four | Five | Six | Seven | Eight | Nine | Ten | Jack | Queen | King | Ace
   deriving (Show, Eq, Ord)
 
 data Card = Card Value Suit
@@ -74,7 +74,7 @@ game (x, y) = game' (x, y) 0
   изначально должно быть не менее 10 карт).
 -}
 
-test_1 = game ([Card Three Hearts, Card Two Diamonds, Card Four Clubs, Card Ace Diamonds, Card Ten Spades, Card Qween Hearts, Card Ace Spades, Card Six Clubs], [Card Three Clubs, Card Nine Diamonds, Card Eight Clubs, Card Ace Clubs, Card Ace Hearts, Card Six Hearts])
+test_1 = game ([Card Three Hearts, Card Two Diamonds, Card Four Clubs, Card Ace Diamonds, Card Ten Spades, Card Queen Hearts, Card Ace Spades, Card Six Clubs], [Card Three Clubs, Card Nine Diamonds, Card Eight Clubs, Card Ace Clubs, Card Ace Hearts, Card Six Hearts])
 
 {-
   7 (необязательное упражнение). Реализуйте версию функции game, которая помимо результатов

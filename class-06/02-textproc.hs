@@ -12,5 +12,29 @@
   Все входные данные программы должны передаваться с помощью параметров
   командной строки.
 -}
+import System.Environment
+import System.IO
 
-main = undefined
+
+countLines :: String -> IO()
+countLines fname = do
+	contents <- readFile fname	
+	print $ count contents
+		where count contents = foldl (\acc x -> if x == '\n' then acc + 1 else acc) 0 contents
+
+
+addFirst :: String -> String -> IO()
+addFirst fname s = do
+	contents <- readFile fname
+	writeFile "tmp.txt" s
+	writeFile "tmp.txt" contents
+	
+
+
+main = do
+	[fname, s] <- getArgs
+	countLines fname
+	addFirst fname s
+	
+
+

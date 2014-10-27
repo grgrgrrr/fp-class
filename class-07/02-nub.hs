@@ -16,13 +16,13 @@ nub_set :: Set.IntSet -> Int
 nub_set = Set.size
 
 nub_list :: [Int] -> Int
-nub_list = undefined
+nub_list xs = snd $ foldl(\acc x -> if (elem x (fst acc)) then acc else (x:fst acc, snd acc + 1)) ([], 0) xs
 
 nub_seq :: Seq.Seq a -> Int
-nub_seq = undefined
+nub_seq xs = snd $ (Seq.:>) $ scanl(\acc x -> if (elem x (fst acc)) then acc else (x (Seq.<|) fst acc, snd acc + 1)) ((Seq.empty), 0) xs
 
 nub_arr :: Array Int Int -> Int
-nub_arr = undefined
+nub_arr xs = length $ nub $ Data.Array.IArray.elems xs 
 
 main = do
   [fname] <- getArgs

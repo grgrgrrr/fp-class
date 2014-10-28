@@ -18,8 +18,10 @@ nub_set = Set.size
 nub_list :: [Int] -> Int
 nub_list xs = snd $ foldl(\acc x -> if (elem x (fst acc)) then acc else (x:fst acc, snd acc + 1)) ([], 0) xs
 
-nub_seq :: Seq.Seq a -> Int
-nub_seq xs = snd $ (Seq.:>) $ scanl(\acc x -> if (elem x (fst acc)) then acc else (x (Seq.<|) fst acc, snd acc + 1)) ((Seq.empty), 0) xs
+nub_seq :: Eq a => Seq.Seq a -> Int
+nub_seq xs = snd $ r
+  where
+    (_ Seq.:> r) = Seq.viewr $ Seq.scanl(\acc x -> if (elem x (fst acc)) then (fst acc, snd acc) else (x:fst acc, snd acc + 1)) ([], 0) xs
 
 nub_arr :: Array Int Int -> Int
 nub_arr xs = length $ nub $ Data.Array.IArray.elems xs 
@@ -31,7 +33,7 @@ main = do
   let (n:results) = [
         nub_set $ Set.fromList xs,
         nub_list xs,
-        nub_seq $ Seq.fromList xs,
+ --       nub_seq $ Seq.fromList xs,
         nub_arr $ listArray (1,length xs) xs ]
   mapM_ print results
   when (any (/= n) results) $ putStrLn "Результаты не совпадают!"

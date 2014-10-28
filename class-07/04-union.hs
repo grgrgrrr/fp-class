@@ -4,4 +4,18 @@
   в заданных текстовых файлах.
 -}
 
-main = undefined
+import System.Environment
+import qualified Data.Set as Set
+
+readNumFile :: FilePath -> IO [Int]
+readNumFile fname = do
+	content <- readFile fname
+  	let xs = map read $ concatMap words $ lines content
+	return xs
+
+solve :: [[Int]] -> (Int, [Int])
+solve xs = (Set.size mySet, (Set.foldl (+) 0 mySet))
+	where 
+		mySet = Set.unions $ map Set.fromList xs
+
+main = getArgs >>= mapM readNumFile >>= print.solve

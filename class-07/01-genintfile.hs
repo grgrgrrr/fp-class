@@ -14,7 +14,7 @@ import Data.List
 createFile  :: String -> Int -> Int -> Int -> Int -> IO ()
 createFile fname from to countNum countS = do
 	genP <- getStdGen
-	writeFile "digits.txt" (allNewDigits genP)
+	writeFile fname (allNewDigits genP)
 			where 
 				newDigits genP = take countNum $ randomRs (from, to) (mkStdGen genP) :: [Int]
 

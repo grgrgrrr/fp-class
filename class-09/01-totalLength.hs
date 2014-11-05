@@ -5,7 +5,7 @@ import System.Environment
 -}
 
 totalLength :: [String] -> Int
-totalLength = undefined
+totalLength xs = foldl1 (+) $ fmap (\x -> length x) xs
 
 {-
   Написать функцию, которая по заданному символу и целому числу n строит список строк,
@@ -13,7 +13,8 @@ totalLength = undefined
 -}
 
 build1 :: Char -> Int -> Maybe [String]
-build1 = undefined
+build1 ch 0 = Nothing
+build1 ch n = Just ([replicate c ch | c <- [1..n]])
 
 {-
   Написать функцию, аналогичную по возможностям функции build1, но возвращающую при этом
@@ -25,7 +26,11 @@ build1 = undefined
 -}
 
 build2 :: Char -> Int -> Either String [String]
-build2 = undefined
+build2 ch n
+	| n == 0 = Left ("n = 0")
+	| n>100 = Left ("n>100")
+	| ch == 'x' = Left ("Роспотребнадзор запрещает создавать строки из символа x")
+	| otherwise = Right ([replicate c ch | c <- [1..n]])
 
 {-
   Параметрами командной строки являются имя файла, символ, целое число.

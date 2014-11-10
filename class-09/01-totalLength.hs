@@ -1,4 +1,5 @@
 import System.Environment
+import Control.Monad.Instances
 
 {-
   Написать функцию, которая по заданному списку строк возвращает сумму длин всех строк.
@@ -38,7 +39,6 @@ build2 ch n
 
 {- 1) Пользуясь функцией totalLength и возможностями IO, как функтора, подсчитать и
      вывести общую длину строк, переданных программе в качестве аргументов командной строки. -}
-
 {-  2) Пользуясь функцией totalLength и возможностями IO, как функтора, подсчитать и вывести общую
      длину строк, содержащихся в заданном текстовом файле (результат readFile должен быть
      предварительно преобразован к списку строк).-}
@@ -48,8 +48,25 @@ totalLinesLength fname = (totalLength . lines) `fmap` readFile fname
 {- 3) Пользуясь функцией totalLength, подсчитать общую длину строк для значений в контекстах,
      сформированных функциями build1 и build2 (в решении следует пользоваться возможностями
      Maybe и Either String как функторов). -}
+totalLengthAll1 ch num = totalLength `fmap` (build1 (read ch) (read num))
+
+totalLengthAll2 ch num = totalLength `fmap` (build2 (read ch) (read num))
+
 
 main = do
 	[fname, ch, num] <- getArgs
-	i<- totalLinesLength fname
-	print i
+
+	k<- totalLength `fmap` getArgs
+	print k
+
+    	i<- totalLinesLength fname
+    	print i
+
+	print $ totalLengthAll1 ch num
+
+	print $ totalLengthAll2 ch num
+
+
+
+	
+

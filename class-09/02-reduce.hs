@@ -45,12 +45,12 @@ toList = foldl (\acc x -> (fst x * snd x): acc) []
 
 
 --Считает сумму покупки, если товаров нет на складе, возвращает Nothing
-mySum xs = foldl (\acc x -> (fst x * snd x)) 0 xs
+mySum xs = foldl (\acc x -> (fst x * snd x) + acc) 0 xs
 
 toMaybe :: (Integral a) => [(a, a)]  -> Maybe a
 toMaybe xs 
 	| mySum xs == 0 = Nothing
-	| otherwise = Just (mySum xs)
+	| otherwise = fmap mySum (Just xs)
 	
 
 
@@ -59,7 +59,7 @@ toEither :: (Integral a) => [(a, a)]  -> Either String a
 toEither xs
 	| (foldl (\acc x -> fst x + acc) 0 xs) > 60 = Left("Слишком много покупок. Вы столько не унесете!")
 	| mySum xs > 100000 = Left("Слишком большая сумма покупки. У вас нет столько денег!")
-	| otherwise = Right (foldl (\acc x -> snd x + acc) 0 xs)
+	| otherwise = fmap mySum (Right xs)
 
 -- воспользуйтесь в этой функции случайными числами
 toIO :: Integral a => [(a, a)]  -> IO a

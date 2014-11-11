@@ -1,5 +1,6 @@
 import System.Environment
 import Control.Monad.Instances
+import System.Random
 
 {-
   Напишите функцию reduce, принимающую один целочисленный аргумент a и возвращающую 0,
@@ -52,18 +53,21 @@ toMaybe xs
 	| mySum xs == 0 = Nothing
 	| otherwise = fmap mySum (Just xs)
 	
-
-
 --Считает сумму покупки, в исключительных случаях выводим сообщения 
 toEither :: (Integral a) => [(a, a)]  -> Either String a
 toEither xs
-	| (foldl (\acc x -> fst x + acc) 0 xs) > 60 = Left("Слишком много покупок. Вы столько не унесете!")
-	| mySum xs > 100000 = Left("Слишком большая сумма покупки. У вас нет столько денег!")
+	| (foldl (\acc x -> fst x + acc) 0 xs) > 60 = Left("Unreal num")
+	| mySum xs > 10000000 = Left("Unreal Price")
 	| otherwise = fmap mySum (Right xs)
 
 -- воспользуйтесь в этой функции случайными числами
+--берет первое случайное кол-во элементов
 toIO :: Integral a => [(a, a)]  -> IO a
-toIO = undefined
+toIO l = do
+	genP <- getStdGen
+	number <- randomRIO (1,100) :: IO Int
+	return $ mySum $ take number l
+		
 
 {-
   В параметрах командной строки задано имя текстового файла, в каждой строке
@@ -75,15 +79,22 @@ toIO = undefined
 -}
 
 parseArgs :: [String] -> (FilePath, Int)
-parseArgs = undefined
+parseArgs [str1, str2] = (str1, read str2)
+
+parseInts :: [String] -> (Int, Int)
+parseInts [str1, str2] = (read str1, read str2)
 
 readData :: FilePath -> IO [(Int, Int)]
-readData = undefined
+readData fname = do
+	content <- readFile fname
+  	let xs = map parseInts $ map words $ lines content
+	return xs
 
 main = do
   (fname, n) <- parseArgs `fmap` getArgs
   ps <- readData fname
-  undefined
+  print $ reduceNF n (toList ps)
+  print $ reduceNF n (toMaybe ps)
   print $ reduceNF n (toEither ps)
   reduceNF n (toIO ps) >>= print
 

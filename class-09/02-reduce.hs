@@ -29,8 +29,8 @@ reduceNF n fa =  foldl(\acc x -> reduce `fmap` acc) fa [1..n]
 
 --Вариант 1
 --формирует список координатных чевертей для точек, заданных парами чисел
-{-toList :: Integral a => [(a, a)]  -> [a]
-toList xs = foldl(\acc x -> findQ x : acc) [] xs
+{-
+toList = foldl(\acc x -> findQ x : acc) []
 	where
 		findQ p 
 			| fst p > 0 && snd p > 0 = 1
@@ -39,16 +39,27 @@ toList xs = foldl(\acc x -> findQ x : acc) [] xs
 			| otherwise = 4 -}
 
 --Вариант 2
---формирует список индекса Кетле, показывающего 
---соотношение роста и веса человека для пар вида (вес, рост)
-toList = foldl(\acc x -> (fst x / (snd x)^2): acc) [] 
+--Формирует список, содержащий стоимость товаров, если известно количество и цена  (количество, цена)
+toList :: (Integral a) => [(a, a)]  -> [a]
+toList = foldl (\acc x -> (fst x * snd x): acc) [] 
 
---
-toMaybe :: Integral a => [(a, a)]  -> Maybe a
-toMaybe = undefined
 
-toEither :: Integral a => [(a, a)]  -> Either String a
-toEither = undefined
+--Считает сумму покупки, если товаров нет на складе, возвращает Nothing
+mySum xs = foldl (\acc x -> (fst x * snd x)) 0 xs
+
+toMaybe :: (Integral a) => [(a, a)]  -> Maybe a
+toMaybe xs 
+	| mySum xs == 0 = Nothing
+	| otherwise = Just (mySum xs)
+	
+
+
+--Считает сумму покупки, в исключительных случаях выводим сообщения 
+toEither :: (Integral a) => [(a, a)]  -> Either String a
+toEither xs
+	| (foldl (\acc x -> fst x + acc) 0 xs) > 60 = Left("Слишком много покупок. Вы столько не унесете!")
+	| mySum xs > 100000 = Left("Слишком большая сумма покупки. У вас нет столько денег!")
+	| otherwise = Right (foldl (\acc x -> snd x + acc) 0 xs)
 
 -- воспользуйтесь в этой функции случайными числами
 toIO :: Integral a => [(a, a)]  -> IO a

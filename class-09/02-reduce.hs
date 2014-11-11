@@ -1,4 +1,5 @@
 import System.Environment
+import Control.Monad.Instances
 
 {-
   Напишите функцию reduce, принимающую один целочисленный аргумент a и возвращающую 0,
@@ -7,24 +8,42 @@ import System.Environment
 -}
 
 reduce :: Integral a => a -> a
-reduce = undefined
+reduce a 
+	| a `mod` 3 == 0 = 0
+	| a `mod` 3 /= 0 && odd a = a^2
+	| otherwise = a^3 
 
 {-
-  Напишите функцию, применяющую функцию reduce заданное количество раз к значению в контексте,
-  являющемся функтором:
+  Напишите функцию, применяющую функцию reduce заданное количество раз к значению в контексте, являющемся функтором:
 -}
+
+--reduceNF :: (Functor f, Integral a) => Int -> f a -> f a
+--reduceNF n fa =  take n (iterate (fmap reduce) fa) :( 
 
 reduceNF :: (Functor f, Integral a) => Int -> f a -> f a
-reduceNF = undefined
+reduceNF n fa =  foldl(\acc x -> reduce `fmap` acc) fa [1..n]
 
 {-
-  Реализуйте следующие функции-преобразователи произвольным, но, желательно, осмысленным и
-  нетривиальным способом.
+  Реализуйте следующие функции-преобразователи произвольным, но, желательно, осмысленным и нетривиальным способом.
 -}
 
-toList :: Integral a => [(a, a)]  -> [a]
-toList = undefined
+--Вариант 1
+--формирует список координатных чевертей для точек, заданных парами чисел
+{-toList :: Integral a => [(a, a)]  -> [a]
+toList xs = foldl(\acc x -> findQ x : acc) [] xs
+	where
+		findQ p 
+			| fst p > 0 && snd p > 0 = 1
+			| fst p < 0 && snd p > 0 = 2
+			| fst p < 0 && snd p < 0 = 3
+			| otherwise = 4 -}
 
+--Вариант 2
+--формирует список индекса Кетле, показывающего 
+--соотношение роста и веса человека для пар вида (вес, рост)
+toList = foldl(\acc x -> (fst x / (snd x)^2): acc) [] 
+
+--
 toMaybe :: Integral a => [(a, a)]  -> Maybe a
 toMaybe = undefined
 

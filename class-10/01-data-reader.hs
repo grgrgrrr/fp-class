@@ -8,5 +8,19 @@
    (операции >>= и >>, функции ap, liftM и другие функции монадической обработки данных, использование
    блока do не допускается).
 -}
+import System.Environment
+import Control.Monad
 
-main = undefined
+type Name = String
+type Age = Int
+type Group = Float
+
+data Student = Student Name Age Group
+	deriving (Show)
+
+makeTriple :: [a] -> [[a]]
+makeTriple [] = []
+makeTriple xs = take 3 xs : makeTriple (drop 3 xs)
+
+main = (head `liftM` getArgs) >>= readFile >>= lines >>= makeTriple >>= foldl (\acc (n:a:g)-> Student n a g : acc) []
+

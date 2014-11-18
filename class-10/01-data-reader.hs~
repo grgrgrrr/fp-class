@@ -10,17 +10,35 @@
 -}
 import System.Environment
 import Control.Monad
+import Control.Applicative
 import Data.List
+import Data.Ord
 
 data Student = Student {
 	name :: String
 	, age :: Int
 	, group :: Float
-	} deriving (Show)
+	} deriving (Eq)
+
+instance Ord Student where
+  compare (Student name1 age1 gr1) (Student name2 age2 gr2) = compare name1 name2
+
+instance Show Student where
+	show (Student name1 age1 gr1) = show name1 ++ "\n" ++ show age1 ++ "\n" ++ show gr1 + "\n"
+
 
 makeTriple :: [a] -> [[a]]
 makeTriple [] = []
 makeTriple xs = take 3 xs : makeTriple (drop 3 xs)
 
-main = (head `liftM` getArgs) >>= readFile >>=(print . ((foldl (\acc [n,a,g]-> Student n (read a) (read g) : acc) []) . makeTriple . lines))
+makeList :: String -> IO [Student]
+makeList fp = readFile fp >>= (pure . ((foldl (\acc [n,a,g]-> Student n (read a) (read g) : acc) []) . makeTriple . lines))
+
+makeMerge :: String -> String ->  IO ()
+makeMerge name1 name2 = (++) `liftM` makeList name1 `ap` makeList name2 >>= (writeToFile . sort)
+
+writeToFile :: [Student] -> IO ()
+writeToFile s =  return (show s) >>= writeFile "allStudents.txt"
+
+main = makeMerge "students1.txt" "students2.txt"
 

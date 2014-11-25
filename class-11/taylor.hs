@@ -2,6 +2,8 @@ import Control.Monad.Writer
 
 eps = 0.0000000001
 
+
+
 taylorSin :: Double -> Double -> Double -> Double -> Writer [Double] Double
 taylorSin x sum prevN i 
 	| abs (prevN - nextN) < eps = tell [prevN] >> return sum

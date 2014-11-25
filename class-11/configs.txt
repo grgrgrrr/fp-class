@@ -1,0 +1,3 @@
+multiplier = 2
+summand = 2
+divisor = 1

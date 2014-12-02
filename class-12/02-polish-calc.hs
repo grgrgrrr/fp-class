@@ -25,14 +25,19 @@
 
 import Control.Monad
 import Control.Monad.State
+import Control.Monad.Trans.Maybe
 
 type Stack = [Int]
 
-push :: Int -> State Stack ()
+push :: Int -> MaybeT (State Stack) ()
 push x = get >>= put . (x:)
 
-pop :: State Stack Int
-pop = get >>= \(x:xs) -> put xs >> return x
+pop :: MaybeT (State Stack) Int
+pop = do
+	val <- lift get
+	guard (not (null val))	
+	lift $ put (tail val)
+	return (head val)
 
 evalRPN :: String -> Int
 evalRPN xs = head $ execState (mapM step $ words xs) []

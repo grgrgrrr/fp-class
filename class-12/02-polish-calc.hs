@@ -39,7 +39,7 @@ pop = do
 	lift $ put (tail val)
 	return (head val)
 
-evalRPN :: String -> Int
+evalRPN :: String -> Maybe Int
 evalRPN xs = head $ execState (mapM step $ words xs) []
   where
     step "+" = processTops (+)

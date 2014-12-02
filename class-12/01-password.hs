@@ -43,4 +43,5 @@ parseConfig (mlen : isl : isd : isp : _) = Config (read mlen) (read isl) (read i
 
 main = do
 	config <- getArgs
-	runReader (runMaybeT askPassword) (parseConfig config)
+	k <- runReaderT  (runMaybeT askPassword) (parseConfig config)
+        print k

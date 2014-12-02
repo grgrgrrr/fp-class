@@ -25,23 +25,24 @@ isValid s (Config mlen isl isd isp) = (length s >= mlen) &&
                 (if isd then any isNumber s else True) && 
                 (if isp then any isPunctuation s else True)
 
-getValidPassword :: MaybeT (ReaderT Config IO) String
+getValidPassword :: MaybeT (WriterT [String] (ReaderT Config IO)) String
 getValidPassword = do
-  config <- lift ask
-  lift $ lift $ putStrLn "Введите новый пароль:" 
-  s <- lift $ lift getLine
+  config <- lift $ lift ask
+  lift $ lift $ lift $ putStrLn "Введите новый пароль:" 
+  s <- lift $ lift $ lift getLine
+  lift $ tell [s]
   guard (isValid s config)
   return s
  
-askPassword :: MaybeT (ReaderT Config IO) ()
+askPassword :: MaybeT (WriterT [String] (ReaderT Config IO)) ()
 askPassword = do
   value <- msum $ repeat getValidPassword
-  lift $ lift $ putStrLn "Сохранение в базе данных..."
+  lift $ lift $ lift $ putStrLn "Сохранение в базе данных..."
 
 parseConfig :: [String] -> Config
 parseConfig (mlen : isl : isd : isp : _) = Config (read mlen) (read isl) (read isd) (read isp)
 
 main = do
 	config <- getArgs
-	k <- runReaderT  (runMaybeT askPassword) (parseConfig config)
-        print k
+	k <-  runReaderT (runWriterT  (runMaybeT askPassword)) (parseConfig config)
+        print $ snd k

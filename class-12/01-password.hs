@@ -11,25 +11,36 @@
 import Control.Monad
 import Control.Monad.Trans
 import Control.Monad.Trans.Maybe
-
+import Control.Monad.Reader
+import Control.Monad.Writer
+import System.Environment
 import Data.Char
 
-isValid :: String -> Bool
-isValid s = length s >= 8 && 
-                any isAlpha s && 
-                any isNumber s && 
-                any isPunctuation s
+data Config = Config Int Bool Bool Bool
+	deriving (Show)
 
-getValidPassword :: MaybeT IO String
+isValid :: String -> Config -> Bool
+isValid s (Config mlen isl isd isp) = (length s >= mlen) && 
+                (if isl then any isAlpha s else True) && 
+                (if isd then any isNumber s else True) && 
+                (if isp then any isPunctuation s else True)
+
+getValidPassword :: MaybeT (ReaderT Config IO) String
 getValidPassword = do
-  lift $ putStrLn "Введите новый пароль:"
-  s <- lift getLine
-  guard (isValid s)
+  config <- lift ask
+  lift $ lift $ putStrLn "Введите новый пароль:" 
+  s <- lift $ lift getLine
+  guard (isValid s config)
   return s
  
-askPassword :: MaybeT IO ()
+askPassword :: MaybeT (ReaderT Config IO) ()
 askPassword = do
   value <- msum $ repeat getValidPassword
-  lift $ putStrLn "Сохранение в базе данных..."
+  lift $ lift $ putStrLn "Сохранение в базе данных..."
 
-main = runMaybeT askPassword
+parseConfig :: [String] -> Config
+parseConfig (mlen : isl : isd : isp : _) = Config (read mlen) (read isl) (read isd) (read isp)
+
+main = do
+	config <- getArgs
+	runReader (runMaybeT askPassword) (parseConfig config)

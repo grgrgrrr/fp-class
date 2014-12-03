@@ -1,10 +1,52 @@
 import Parser
 import SimpleParsers
 import ParseNumbers
+import Control.Applicative
 
 {- Напишите парсер для вещественных чисел. -}
+
+--парсер для символа
+getc :: Parser Char
+getc = Parser f
+	where
+		f[] = []
+		f (c:cs) = [(c, cs)]
+
+--парсер для символа, удовлетворяющего предикату
+sat :: (Char -> Bool) -> Parser Char
+sat pr = do
+	c <- getc
+	guard $ pr c
+	return c
+
+--парсер для цифры
+digit :: Parser Int
+digit = digitToInt `fmap` sat isDigit
+
+--несколько значений
+many :: Parser a -> Parser [a]
+many p = many1 p <|> return [ ]
+
+many1 :: Parser a -> Parser [a]
+many1 p = (:) <$> p <*> many p
+
+--парсер для натурального числа
+natural = foldl1 (\m n -> m * 10 + n) `fmap` many1 digit
+
+countNum :: Int -> Int
+countNum 0 = 0
+countNum num = countNum (div num 10) + 1   
+
+--парсер для Float
 float :: Parser Float
-float = undefined
+float = do
+	n <- natural
+	char '.'
+	m <- natural
+	return $ n + m / (10 * countNum n)
+
+
+
 
 {-
   Напишите парсер для представления комплексных чисел,

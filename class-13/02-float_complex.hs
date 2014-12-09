@@ -40,7 +40,11 @@ complex = do
   заключённого в квадратные скобки.
 -}
 complexList :: Parser [(Float, Float)]
-complexList = undefined
+complexList = do
+	char '['
+	k <- sepBy complex (symbol ";") 
+	char ']'
+	return $ k
 
 {-
   Модифицируйте предыдущий парсер таким образом, чтобы в исходной строке
@@ -48,7 +52,18 @@ complexList = undefined
   при этом должна считаться равной нулю).
 -}
 complexList2 :: Parser [(Float, Float)]
-complexList2 = undefined
+complexList2 = do
+	char '['
+	k <- sepBy (complexOrFloat) (symbol ";") 
+	char ']'
+	return $ k
+
+complexOrFloat :: Parser (Float, Float)
+complexOrFloat = complex <|> fl
+	where 
+	fl = do
+	num <- float
+	return $ (num, 0)
 
 {-
    Модифицируйте предыдущий парсер таким образом, чтобы компоненты списка

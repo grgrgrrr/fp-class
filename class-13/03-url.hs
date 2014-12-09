@@ -17,16 +17,53 @@ import Control.Monad
 data Scheme = FTP | HTTP | HTTPS | Unk String
               deriving Show
 type Server = String
+type Login = String 
+type Password = String
+type Host = String
+type Port =  String
 type Path = String
-data URL = URL Scheme Server Path
-           deriving Show
+type Params = String
+type Anchor = String
+
+data URL =  URL Scheme Login Password Server Port Path Params Anchor 
+	deriving Show
 
 scheme = (string "https" >> return HTTPS) <|>
          (string "http" >> return HTTP) <|>
          (string "ftp" >> return FTP) <|>
          Unk `liftM` lowers
 
+login :: Parser Login
+login = many1 (sat (/=':'))
+
+password :: Parser Password
+password = char ':' >> many1 (sat (/= '@'))
+
+host :: Parser Host
+host = char '@' >> many1 (sat(/= ':'))
+
+port :: Parser Port
+port = char ':' >> many1 (sat(/= '/'))
+
+path :: Parser Path
+path = char '/' >> many1 (sat(/= '?'))
+
+params :: Parser Params
+params = char '?' >> many1 (sat(/= '#'))
+
+anchor :: Parser Anchor
+anchor = char '#' >> many (sat $ const True)
+
+
+
+
 url = URL <$>
       scheme <*>
-      (string "://" >> many1 (sat (/='/'))) <*>
-      many (sat $ const True)
+      (string "://" >> login) <*> 
+	password <*>
+	host <*>
+	port <*>
+	params <*>
+	anchor 
+
+

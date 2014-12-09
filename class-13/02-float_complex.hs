@@ -12,11 +12,13 @@ countNum num = countNum (div num 10) + 1
 
 --парсер для Float
 float :: Parser Float
-float = do
-	n <- natural
-	char '.'
-	m <- natural
-	return $ n + m / (10 * countNum n) 
+float = fl <|> fromIntegral <$> natural 
+	where 
+	fl = do
+		n <- natural
+		char '.'
+		m <- natural
+		return $ fromIntegral n + (fromIntegral m / (10 ^ countNum m)) 
 
 {-
   Напишите парсер для представления комплексных чисел,
@@ -25,7 +27,13 @@ float = do
   
 -}
 complex :: Parser (Float, Float)
-complex = undefined
+complex = do
+	char '('
+	n <- float
+	char ','
+	m <- float
+	char ')'
+	return $ (n, m) 
 
 {-
   Напишите парсер для списка комплексных чисел (разделитель — точка с запятой),

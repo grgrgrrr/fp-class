@@ -71,6 +71,6 @@ complexOrFloat = complex <|> fl
    требуемое с помощью вспомогательных парсеров, допускающих повторное применение.
 -}
 complexList3 :: Parser [(Float, Float)]
-complexList3 = undefined
+complexList3 = bracket "[" "]" (sepBy (complexOrFloat) (symbol ","))
 
 
